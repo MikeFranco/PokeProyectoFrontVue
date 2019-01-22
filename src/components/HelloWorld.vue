@@ -14,14 +14,14 @@
 
     <div class="pokealeatorio">
       <div class="botonshowpoke"> <button style="color: black" @click="verPoke()">Show Pokemon</button>  </div>
-        Pokemon con ID aleatorio
-      <img v-if="isPokemonShown" :src="pokemon.image"/>
 
-      <pre v-if="isPokemonShown">
-        {{pokemon.name}}
-        {{pokemon.id}}
-        {{pokemon.move}}
-      </pre>
+      <p v-if="isPokemonShown">
+        Pokemon con ID aleatorio<br>
+      <img v-if="isPokemonShown" :src="pokemon.image"/>
+        <br>Un {{pokemon.name}} salvaje ha aparecido <br>
+        el ID del pokemon es: {{pokemon.id}}<br>
+        ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}
+      </p>
     </div>
 
   </div>
@@ -75,7 +75,7 @@ button {
   background-color: rgb(76, 129, 226);
   border-radius: 10px;
 }
-pre{
+p{
   text-align:center;
 }
 .barraBusqueda{
