@@ -3,7 +3,7 @@
 
     <div class="barraBusqueda">
       <h3>Ingrese el ID del pokemon:</h3>
-      <input style="color: black" type="number" v-model="mandoID" maxlength="3" @keyup.enter="sendID()">
+      <input style="color: black" type="text" v-model="mandoID" maxlength="3" @keyup.enter="sendID()">
       {{mandoID}}
     </div>
 
@@ -13,7 +13,7 @@
     </div>
 
     <div class="pokealeatorio">
-      <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon</button>  </div>
+      <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon Random</button>  </div>
         <br>Pokemon con ID aleatorio <br>
       <img v-if="isPokemonShown" :src="pokemon.image"/>
 
@@ -23,15 +23,17 @@
         ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
       </p>
     </div>
-     <div class="pokeID">
-      <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon with Specific ID</button>  </div>
-        <br>Pokemon con ID aleatorio <br>
-      <img v-if="isPokemonSpec" :src="pokemon.image"/>
 
+    <div class="pokeID">
+      <div class="botonshowpoke"> <button style="color: black" @click="pokeSpec()">Show Pokemon with Specific ID</button>  </div>
+        <br>Pokemon con ID Específico <br>
+
+      <img v-if="isPokemonSpec" :src="pokemon.image"/>
       <p v-if="isPokemonSpec">
         <br>Un {{pokemon.name}} ha aparecido<br>
         El id del pokemon es: {{pokemon.id}}<br>
         ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
+        {{ver}}
       </p>
     </div>
 
@@ -61,11 +63,16 @@ export default {
        this.pokemon = this.getPokemonDataFromResponse (await axios.post('http://localhost:6001/verPokemones') );
     },
     async sendID(){
-      this.isPokemonShown = true;
+      //this.isPokemonShown = true;
       (this.mandoID == '')
         ? alert('Favor de ingresar un ID')
         : (this.mandoID <= 802)
-          ? this.pokemon = this.getPokemonDataFromResponse(await axios.post('http://localhost:6001/verPokemones'))
+          ? await axios.get('http://localhost:6001/verPokemones', { params:{ id : this.mandoID, cosa: 'cosa' } })
+            .then((response)=>{
+              const ver = response.data
+              console.log('la data es: ', ver);
+            })
+            .catch((error) => this.ver = error)
           : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`)
     },
     pokeSpec(){
