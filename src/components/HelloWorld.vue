@@ -13,15 +13,15 @@
     </div>
 
     <div class="pokealeatorio">
-      <div class="botonshowpoke"> <button style="color: black" @click="verPoke()">Show Pokemon</button>  </div>
-        Pokemon con ID aleatorio
+      <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon</button>  </div>
+        <br>Pokemon con ID aleatorio <br>
       <img v-if="isPokemonShown" :src="pokemon.image"/>
 
-      <pre v-if="isPokemonShown">
-        {{pokemon.name}}
-        {{pokemon.id}}
-        {{pokemon.move}}
-      </pre>
+      <p v-if="isPokemonShown">
+        Un {{pokemon.name}} salvaje ha aparecido<br>
+        ID del pokemon: {{pokemon.id}}<br>
+        ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
+      </p>
     </div>
 
   </div>
@@ -36,28 +36,20 @@ export default {
     return {
       mandoID: '',
       limit: '',
-      image: '',
-      name: '',
-      id: '',
-      move: '',
-      code:'',
       msg: '',
       isPokemonShown: false,
-      pokemon: {}
+      pokemon: {},
+      ver: ''
     }
   },
   methods: {
-    async verPoke(){
+    async pokeRandom(){
       this.isPokemonShown = true;
-    },
-    async sendID(){
-      (this.mandoID == '')
-        ? alert('Favor de ingresar un ID')
-        : (this.mandoID <= 802)
-          ? this.pokemon = this.getPokemonDataFromResponse(await axios.post('http://localhost:6001/verPokemones',{id: this.mandoID}))
-          : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`)
+       this.pokemon = this.getPokemonDataFromResponse (await axios.post('http://localhost:6001/verPokemones') );
+       //alert('Esto se murió')
     },
     getPokemonDataFromResponse(response){
+      // eslint-disable-next-line
       console.log(response);
       return response.data;
 
@@ -75,7 +67,7 @@ button {
   background-color: rgb(76, 129, 226);
   border-radius: 10px;
 }
-pre{
+p{
   text-align:center;
 }
 .barraBusqueda{
