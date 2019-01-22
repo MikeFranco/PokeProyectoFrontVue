@@ -3,13 +3,13 @@
 
     <div class="barraBusqueda">
       <h3>Ingrese el ID del pokemon:</h3>
-      <input style="color: black" type="text" v-model="mandoID" maxlength="3" @keyup.enter="sendID()">
+      <input style="color: black" type="number" v-model="mandoID" maxlength="3" @keyup.enter="sendID()">
       {{mandoID}}
     </div>
 
     <div class="cantidad">
       <h3>¿Cuántos Pokemons quieres ver?</h3>
-      <input type="text" v-model="limit" maxlength="3" >
+      <input type="number" v-model="limit" maxlength="3" >
     </div>
 
     <div class="pokealeatorio">
@@ -18,8 +18,19 @@
       <img v-if="isPokemonShown" :src="pokemon.image"/>
 
       <p v-if="isPokemonShown">
-        Un {{pokemon.name}} salvaje ha aparecido<br>
-        ID del pokemon: {{pokemon.id}}<br>
+        <br>Un {{pokemon.name}} ha aparecido<br>
+        El id del pokemon es: {{pokemon.id}}<br>
+        ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
+      </p>
+    </div>
+     <div class="pokeID">
+      <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon with Specific ID</button>  </div>
+        <br>Pokemon con ID aleatorio <br>
+      <img v-if="isPokemonSpec" :src="pokemon.image"/>
+
+      <p v-if="isPokemonSpec">
+        <br>Un {{pokemon.name}} ha aparecido<br>
+        El id del pokemon es: {{pokemon.id}}<br>
         ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
       </p>
     </div>
@@ -36,8 +47,10 @@ export default {
     return {
       mandoID: '',
       limit: '',
+      code:'',
       msg: '',
       isPokemonShown: false,
+      isPokemonSpec: false,
       pokemon: {},
       ver: ''
     }
@@ -46,7 +59,18 @@ export default {
     async pokeRandom(){
       this.isPokemonShown = true;
        this.pokemon = this.getPokemonDataFromResponse (await axios.post('http://localhost:6001/verPokemones') );
-       //alert('Esto se murió')
+    },
+    async sendID(){
+      this.isPokemonShown = true;
+      (this.mandoID == '')
+        ? alert('Favor de ingresar un ID')
+        : (this.mandoID <= 802)
+          ? this.pokemon = this.getPokemonDataFromResponse(await axios.post('http://localhost:6001/verPokemones'))
+          : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`)
+    },
+    pokeSpec(){
+      /*
+       */
     },
     getPokemonDataFromResponse(response){
       // eslint-disable-next-line
@@ -64,7 +88,7 @@ export default {
 button {
   text-align: center;
   margin: 40px 0 0;
-  background-color: rgb(76, 129, 226);
+  background-color: rgb(9, 173, 238);
   border-radius: 10px;
 }
 p{
@@ -92,5 +116,10 @@ input{
   position: absolute;
   top: 150px;
   left: 150px;
+}
+.pokeID{
+  position: absolute;
+  top: 150px;
+  left: 35%;
 }
 </style>
