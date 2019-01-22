@@ -58,33 +58,37 @@ export default {
     }
   },
   methods: {
+
     async pokeRandom(){
       this.isPokemonShown = true;
        this.pokemon = this.getPokemonDataFromResponse (await axios.post('http://localhost:6001/verPokemones') );
     },
-    async sendID(){
-      //this.isPokemonShown = true;
-      (this.mandoID == '')
-        ? alert('Favor de ingresar un ID')
-        : (this.mandoID <= 802)
-          ? await axios.get('http://localhost:6001/verPokemones', { params:{ id : this.mandoID, cosa: 'cosa' } })
-            .then((response)=>{
-              const ver = response.data
-              console.log('la data es: ', ver);
-            })
-            .catch((error) => this.ver = error)
-          : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`)
-    },
-    pokeSpec(){
-      /*
-       */
-    },
+
     getPokemonDataFromResponse(response){
       // eslint-disable-next-line
       console.log(response);
       return response.data;
 
-    }
+    },
+
+    async sendID(){
+      (this.mandoID == '')
+        ? alert('Favor de ingresar un ID')
+        : (this.mandoID <= 802)
+          ? await axios.get('http://localhost:6001/verPokemones', { params:{ id : this.mandoID, cosa: 'cosa' } })
+            .then((response)=>{
+              this.ver = response.config.params
+            })
+            .catch((error) => this.ver = error)
+          : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`)
+    },
+
+    async pokeSpec(){
+      (this.mandoID)
+        ? await axios.post()
+        : alert('Esto se murió')
+    },
+
 
   }
 }
