@@ -4,7 +4,6 @@
     <div class="barraBusqueda">
       <h3>Ingrese el ID del pokemon:</h3>
       <input style="color: black" type="text" v-model="mandoID" maxlength="3" @keyup.enter="sendID()">
-      {{mandoID}}
     </div>
 
     <div class="cantidad">
@@ -47,14 +46,10 @@ export default {
   data(){
     return {
       mandoID: '',
-      limit: '',
-      code:'',
-      msg: '',
       isPokemonShown: false,
       isPokemonSpec: false,
       pokemon: {},
       pokemon2: {},
-      ver: ''
     }
   },
   methods: {
@@ -77,10 +72,6 @@ export default {
         ? alert('Favor de ingresar un ID')
         : (this.mandoID <= 802)
           ? this.pokemon2 = this.getPokemonDataFromResponse( await axios.get('http://localhost:6001/pokemonEspec', { params:{ id : this.mandoID } }))
-           /*  .then((response)=>{
-              this.ver = response.config.params;
-            })
-            .catch((error) => this.ver = error) */
           : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`);
     },
 
