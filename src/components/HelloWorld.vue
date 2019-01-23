@@ -28,11 +28,11 @@
       <div class="botonshowpoke"> <button style="color: black" @click="pokeSpec()">Show Pokemon with Specific ID</button>  </div>
         <br>Pokemon con ID Específico <br>
 
-      <img v-if="isPokemonSpec" :src="pokemon.image"/>
+      <img v-if="isPokemonSpec" :src="pokemon2.image"/>
       <p v-if="isPokemonSpec">
-        <br>Un {{pokemon.name}} ha aparecido<br>
-        El id del pokemon es: {{pokemon.id}}<br>
-        ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
+        <br>Un {{pokemon2.name}} ha aparecido<br>
+        El id del {{pokemon2.name}} es: {{pokemon2.id}}<br>
+        ¡Cuidado!, {{pokemon2.name}} ha usado: {{pokemon2.move}}<br>
       </p>
     </div>
 
@@ -53,6 +53,7 @@ export default {
       isPokemonShown: false,
       isPokemonSpec: false,
       pokemon: {},
+      pokemon2: {},
       ver: ''
     }
   },
@@ -71,22 +72,20 @@ export default {
     },
 
     async sendID(){
+      this.isPokemonSpec = true;
       (this.mandoID == '')
         ? alert('Favor de ingresar un ID')
         : (this.mandoID <= 802)
-          ? await axios.get('http://localhost:6001/pokemonEspec', { params:{ id : this.mandoID } })
-            .then((response)=>{
+          ? this.pokemon2 = this.getPokemonDataFromResponse( await axios.get('http://localhost:6001/pokemonEspec', { params:{ id : this.mandoID } }))
+           /*  .then((response)=>{
               this.ver = response.config.params;
             })
-            .catch((error) => this.ver = error)
+            .catch((error) => this.ver = error) */
           : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`);
     },
 
     async pokeSpec(){
       this.isPokemonSpec = true;
-      (this.mandoID)
-        ? this.pokemon = this.getPokemonDataFromResponse(await axios.post('http://localhost:6001/pokemonEspec'))
-        : alert('Esto se murió')
     },
 
 
@@ -131,6 +130,6 @@ input{
 .pokeID{
   position: absolute;
   top: 150px;
-  left: 35%;
+  left: 50%;
 }
 </style>
