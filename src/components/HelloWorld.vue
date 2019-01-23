@@ -33,7 +33,6 @@
         <br>Un {{pokemon.name}} ha aparecido<br>
         El id del pokemon es: {{pokemon.id}}<br>
         ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
-        {{ver}}
       </p>
     </div>
 
@@ -75,17 +74,18 @@ export default {
       (this.mandoID == '')
         ? alert('Favor de ingresar un ID')
         : (this.mandoID <= 802)
-          ? await axios.get('http://localhost:6001/verPokemones', { params:{ id : this.mandoID, cosa: 'cosa' } })
+          ? await axios.get('http://localhost:6001/pokemonEspec', { params:{ id : this.mandoID } })
             .then((response)=>{
-              this.ver = response.config.params
+              this.ver = response.config.params;
             })
             .catch((error) => this.ver = error)
-          : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`)
+          : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`);
     },
 
     async pokeSpec(){
+      this.isPokemonSpec = true;
       (this.mandoID)
-        ? await axios.post()
+        ? this.pokemon = this.getPokemonDataFromResponse(await axios.post('http://localhost:6001/pokemonEspec'))
         : alert('Esto se murió')
     },
 
