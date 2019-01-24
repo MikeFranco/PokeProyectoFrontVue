@@ -12,6 +12,7 @@
     </div>
 
     <div class="pokealeatorio">
+
       <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon Random</button>  </div>
 
       <p v-if="isPokemonShown">
@@ -31,6 +32,8 @@
         <br>Un {{pokemon2.name}} ha aparecido<br>
         El id del {{pokemon2.name}} es: {{pokemon2.id}}<br>
         ¡Cuidado!, {{pokemon2.name}} ha usado: {{pokemon2.move}}<br>
+
+
       </p>
     </div>
 
