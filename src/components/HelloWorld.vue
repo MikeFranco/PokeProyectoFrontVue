@@ -8,15 +8,15 @@
 
     <div class="cantidad">
       <h3>¿Cuántos Pokemons quieres ver?</h3>
-      <input type="number" v-model="limit" maxlength="3" >
+      <input type="number" v-model="limit" maxlength="3" @keyup.enter="pokeInterval()">{{limit}}
     </div>
 
     <div class="pokealeatorio">
       <div class="botonshowpoke"> <button style="color: black" @click="pokeRandom()">Show Pokemon Random</button>  </div>
-        <br>Pokemon con ID aleatorio <br>
-      <img v-if="isPokemonShown" :src="pokemon.image"/>
 
       <p v-if="isPokemonShown">
+        <br>Pokemon con ID aleatorio <br>
+        <img :src="pokemon.image"/>
         <br>Un {{pokemon.name}} ha aparecido<br>
         El id del pokemon es: {{pokemon.id}}<br>
         ¡Cuidado!, {{pokemon.name}} ha usado: {{pokemon.move}}<br>
@@ -24,16 +24,16 @@
     </div>
 
     <div class="pokeID">
-      <div class="botonshowpoke"> <button style="color: black" @click="pokeSpec()">Show Pokemon with Specific ID</button>  </div>
-        <br>Pokemon con ID Específico <br>
 
-      <img v-if="isPokemonSpec" :src="pokemon2.image"/>
       <p v-if="isPokemonSpec">
+        <br>Pokemon con ID Específico <br>
+      <img :src="pokemon2.image"/>
         <br>Un {{pokemon2.name}} ha aparecido<br>
         El id del {{pokemon2.name}} es: {{pokemon2.id}}<br>
         ¡Cuidado!, {{pokemon2.name}} ha usado: {{pokemon2.move}}<br>
       </p>
     </div>
+
 
   </div>
 </template>
@@ -46,10 +46,12 @@ export default {
   data(){
     return {
       mandoID: '',
+      limit: '',
       isPokemonShown: false,
       isPokemonSpec: false,
       pokemon: {},
       pokemon2: {},
+      prueba: {}
     }
   },
   methods: {
@@ -75,10 +77,14 @@ export default {
           : alert(`El pokemon con id ${this.mandoID} no está registrado en la Pokedex`);
     },
 
-    async pokeSpec(){
-      this.isPokemonSpec = true;
+    async pokeInterval(){
+      (this.intervalo == '')
+        ? alert('Favor de ingresar un Intervalo')
+        : this.back()
     },
-
+    async back(){
+      this.prueba = this.getPokemonDataFromResponse( await axios.get('http://localhost:6001/pokemonIntervalo', { params:{limit: this.limit, offset: this.mandoID}}))
+    },
 
   }
 }
@@ -119,6 +125,7 @@ input{
   left: 150px;
 }
 .pokeID{
+  margin-top: 128px;
   position: absolute;
   top: 150px;
   left: 50%;
